@@ -9,6 +9,14 @@ require __DIR__ . '/../vendor/autoload.php';
 // Create Container using PHP-DI
 $container = new Container();
 
+$container->set('settings', function () {
+    return [
+        'displayErrorDetails' => true,
+        'logErrorDetails' => false,
+        'logErrors' => false,
+    ];
+});
+
 // Set container to create App with on AppFactory
 AppFactory::setContainer($container);
 
@@ -16,7 +24,12 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 // Add Error Handling Middleware
-$app->addErrorMiddleware(true, false, false);
+$setting = $app->getContainer()->get('settings');
+$app->addErrorMiddleware(
+    $setting['displayErrorDetails'],
+    $setting['logErrors'],
+    $setting['logErrorDetails']
+);
 
 // Add route callbacks
 $app->get('/', function (Request $request, Response $response, array $args) {
