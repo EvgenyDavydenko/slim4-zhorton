@@ -9,13 +9,8 @@ require __DIR__ . '/../vendor/autoload.php';
 // Create Container using PHP-DI
 $container = new Container();
 
-$container->set('settings', function () {
-    return [
-        'displayErrorDetails' => true,
-        'logErrorDetails' => false,
-        'logErrors' => false,
-    ];
-});
+$settings = require __DIR__ . '/../config/settings.php';
+$settings($container);
 
 // Set container to create App with on AppFactory
 AppFactory::setContainer($container);
@@ -24,12 +19,8 @@ AppFactory::setContainer($container);
 $app = AppFactory::create();
 
 // Add Error Handling Middleware
-$setting = $app->getContainer()->get('settings');
-$app->addErrorMiddleware(
-    $setting['displayErrorDetails'],
-    $setting['logErrors'],
-    $setting['logErrorDetails']
-);
+$middleware = require __DIR__ . '/../config/middleware.php';
+$middleware($app);
 
 // Add route callbacks
 $app->get('/', function (Request $request, Response $response, array $args) {
