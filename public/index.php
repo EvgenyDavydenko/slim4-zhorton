@@ -1,7 +1,5 @@
 <?php
 use DI\Container;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -23,16 +21,8 @@ $middleware = require __DIR__ . '/../config/middleware.php';
 $middleware($app);
 
 // Add route callbacks
-$app->get('/', function (Request $request, Response $response, array $args) {
-    $response->getBody()->write('Hello, World!');
-    return $response;
-});
-
-$app->get('/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
-});
+$app->get('/', App\Action\HelloWorldAction::class);
+$app->get('/{name}', App\Action\HelloNameAction::class);
 
 // Run application
 $app->run();
