@@ -1,6 +1,7 @@
 <?php $__env->startSection('content'); ?>
     <div>
-        Home Page
+        Home Page <?php echo e($name); ?>
+
     </div>
 <?php $__env->stopSection(); ?>
 

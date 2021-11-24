@@ -2,6 +2,6 @@
 
 @section('content')
     <div>
-        Home Page
+        Home Page {{$name}}
     </div>
 @endsection
