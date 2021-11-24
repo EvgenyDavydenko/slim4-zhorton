@@ -21,8 +21,8 @@ $middleware = require __DIR__ . '/../config/middleware.php';
 $middleware($app);
 
 // Add route callbacks
-$app->get('/', App\Action\HelloWorldAction::class);
-$app->get('/{name}', App\Action\HelloNameAction::class);
+$routes = require __DIR__ . '/../config/routes.php';
+$routes($app);
 
 // Run application
 $app->run();
